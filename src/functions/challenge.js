@@ -2,9 +2,9 @@ const {App, LogLevel} = require("@slack/bolt");
 const { TOKEN, SIGNING_SECRET} = process.env
 
 exports.handler = async (req) => {
-    console.log('EVENT BODY', req.body.event);
+    console.log('EVENT BODY', req.body["event"]);
 
-    const { event } = req.body;
+    const event = req.body["event"];
     const {channel, event_ts} = event.event;
 
     console.log('CHANNEL', channel);
