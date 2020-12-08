@@ -2,6 +2,7 @@ const {App, LogLevel} = require("@slack/bolt");
 const { TOKEN, SIGNING_SECRET} = process.env
 
 exports.handler = async (event) => {
+    console.log('VARS', process.env);
     console.log('VARS', TOKEN, SIGNING_SECRET);
     const app = new App({
         token: TOKEN,
