@@ -5,11 +5,6 @@ const express = require('express')
 const serverless = require('serverless-http');
 const app = express()
 
-
-app.get('/challenge', function (req, res) {
-    res.send(req.body.challenge);
-})
-
 /*app.listen(constants.PORT, () => {
     console.log(`Example app listening at http://localhost:${constants.PORT}`)
 })*/
