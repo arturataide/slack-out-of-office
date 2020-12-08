@@ -2,14 +2,14 @@ const {App, LogLevel} = require("@slack/bolt");
 const { TOKEN, SIGNING_SECRET} = process.env
 
 exports.handler = async (event) => {
-
+    console.log('VARS', TOKEN, SIGNING_SECRET);
     const app = new App({
         token: TOKEN,
         signingSecret: SIGNING_SECRET,
         // LogLevel can be imported and used to make debugging simpler
         logLevel: LogLevel.DEBUG
     });
-    console.log('VARS', TOKEN, SIGNING_SECRET);
+
     console.log('EVENT BODY', event.body);
     return {
         statusCode: 200,
