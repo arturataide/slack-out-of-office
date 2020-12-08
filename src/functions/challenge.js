@@ -2,8 +2,11 @@ const {App, LogLevel} = require("@slack/bolt");
 const { TOKEN, SIGNING_SECRET} = process.env
 
 exports.handler = async (req) => {
-    const {channel, event_ts} = req.body.event;
     console.log('EVENT BODY', req.body.event);
+
+    const { event } = req.body;
+    const {channel, event_ts} = event.event;
+
     console.log('CHANNEL', channel);
     console.log('Timestamp', event_ts,  new Date(event_ts));
     publishMessage(channel, 'This is my simple reply :)')
