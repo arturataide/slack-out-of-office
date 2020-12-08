@@ -8,11 +8,11 @@ exports.handler = async ({body}) => {
     const {channel, event_ts} = body.event;
 
     console.log('CHANNEL', channel);
-    console.log('Timestamp', event_ts,  new Date(event_ts));
-    publishMessage(channel, 'This is my simple reply :)')
+    console.log('Timestamp', event_ts,  new Date(event_ts * 1000));
+    /*publishMessage(channel, 'This is my simple reply :)')*/
     return {
         statusCode: 200,
-        body: req.body,
+        body,
     }
 }
 
