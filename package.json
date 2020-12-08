@@ -11,6 +11,7 @@
   "author": "Artur Ataide",
   "license": "MIT",
   "dependencies": {
+    "@slack/bolt": "^2.5.0",
     "@slack/events-api": "^2.3.4",
     "@slack/web-api": "^5.14.0",
     "esm": "^3.2.25",
