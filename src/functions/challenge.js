@@ -1,32 +1,33 @@
 const {App, LogLevel} = require("@slack/bolt");
 const { TOKEN, SIGNING_SECRET} = process.env
 
-exports.handler = async (event) => {
-    console.log('VARS', process.env);
-    console.log('VARS', TOKEN, SIGNING_SECRET);
+exports.handler = async (req) => {
     const app = new App({
         token: TOKEN,
         signingSecret: SIGNING_SECRET,
         // LogLevel can be imported and used to make debugging simpler
         logLevel: LogLevel.DEBUG
     });
-
-    console.log('EVENT BODY', event.body);
+    const {channel, event_ts} = req.body.event;
+    console.log('EVENT BODY', req.body.event);
+    console.log('CHANNEL', channel);
+    console.log('Timestamp', event_ts,  new Date(event_ts));
+    publishMessage(channel, 'This is my simple reply :)')
     return {
         statusCode: 200,
-        body: event.body,
+        body: req.body,
     }
 }
 
 // Post a message to a channel your app is in using ID and message text
-async function publishMessage(id, text) {
+async function publishMessage(channel, text) {
     try {
         // Call the chat.postMessage method using the built-in WebClient
         const result = await app.client.chat.postMessage({
             // The token you used to initialize your app
             token: TOKEN,
-            channel: id,
-            text: text
+            channel,
+            text
             // You could also use a blocks[] array to send richer content
         });
 
