@@ -6,9 +6,10 @@ exports.handler = async (req) => {
     console.log('###################################');
     console.log('REQ BODY', req.body);
     console.log('###################################');
-    console.log('EVENT BODY', req.body["event"]);
+    const body = JSON.parse(req.body)
+    console.log('EVENT BODY', body.event);
 
-    const event = req.body["event"];
+    const event = body["event"];
     const {channel, event_ts} = event.event;
 
     console.log('CHANNEL', channel);
