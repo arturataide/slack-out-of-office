@@ -13,21 +13,29 @@ async function processMessage(body) {
     console.log('CHANNEL', channel);
     console.log('TIMESTAMP', event_ts, messageDateTime);
     if (isOutOfOffice(messageDateTime)) {
+        if (isBot(body.event)) {
+            return sendResponse({message: "Message sent from a bot. No action performed"});
+        }
         console.log('SENDING MESSAGE');
         // TODO: check if message comes from bot (bot_profile is present)
-        await publishMessage(channel, 'This is my simple reply :)')
+        await publishMessage(channel, 'We are out of the office currently. We will reply as soon as possible.')
         return sendResponse({message: "Out Of Office Message Send"});
     }
-    return sendResponse({message: "We are in working hours. No action done"});
+    return sendResponse({message: "We are in working hours. No action performed"});
 }
 
 function isChallenge(body) {
     return ("challenge" in body)
 }
 
+function isBot(event) {
+    return "bot_profile" in event;
+}
+
 function isOutOfOffice(messageDateTime) {
     const hourStart = 9;
     const hourEnd = 18
+    // TODO: Make timezone aware
     console.log('RECEIVED AT: ', messageDateTime.getHours());
     return messageDateTime.getHours() >= hourStart && messageDateTime.getHours() < hourEnd
 }
@@ -35,10 +43,8 @@ function isOutOfOffice(messageDateTime) {
 // Post a message to a channel your app is in using ID and message text
 async function publishMessage(channel, text) {
     const app = new App({
-        /*token: TOKEN,*/
-        token: "xoxb-1540817314855-1541377982951-Q24WbVzyS8c0BcsR8DpQG2KN",
-        /*signingSecret: SIGNING_SECRET,*/
-        signingSecret: "275f57c935216d207c6eb09fd08c07bc",
+        token: TOKEN,
+        signingSecret: SIGNING_SECRET,
         // LogLevel can be imported and used to make debugging simpler
         logLevel: LogLevel.DEBUG
     });
