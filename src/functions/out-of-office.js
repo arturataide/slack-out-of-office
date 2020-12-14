@@ -18,7 +18,7 @@ async function processMessage(body) {
         }
         console.log('SENDING MESSAGE');
         // TODO: check if message comes from bot (bot_profile is present)
-        await publishMessage(channel, 'We are out of the office currently. We will reply as soon as possible.')
+        await publishMessage(channel, 'We are out of the office currently. We will reply as soon as possible.', event_ts)
         return sendResponse({message: "Out Of Office Message Send"});
     }
     return sendResponse({message: "We are in working hours. No action performed"});
@@ -41,7 +41,7 @@ function isOutOfOffice(messageDateTime) {
 }
 
 // Post a message to a channel your app is in using ID and message text
-async function publishMessage(channel, text) {
+async function publishMessage(channel, text, thread_ts) {
     const app = new App({
         token: TOKEN,
         signingSecret: SIGNING_SECRET,
@@ -54,7 +54,9 @@ async function publishMessage(channel, text) {
             // The token you used to initialize your app
             token: TOKEN,
             channel,
-            text
+            text,
+            icon_emoji: ':clock1:',
+            thread_ts
             // You could also use a blocks[] array to send richer content
         });
 
