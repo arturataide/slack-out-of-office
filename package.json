@@ -1,6 +1,6 @@
 {
   "name": "slack-out-of-office",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "I am here to manage the chat when no one is working :)",
   "main": "src",
   "scripts": {

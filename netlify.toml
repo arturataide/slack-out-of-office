@@ -1,6 +1,6 @@
 [build]
   functions = "build"
-  command = "pnpm build"
+  command = "npm run build"
   publish = "build"
 
 [[redirects]]
