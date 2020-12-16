@@ -1,5 +1,7 @@
 [build]
-  functions = "./src/functions"
+  functions = "build"
+  command = "pnpm build"
+  publish = "build"
 
 [[redirects]]
     from = "/api/*"
