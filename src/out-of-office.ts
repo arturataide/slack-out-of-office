@@ -34,15 +34,14 @@ export class OutOfOfficeBot {
 
   public async pleaseWork(body: IBody): Promise<unknown> {
     console.log('ENV_VARS', process.env.START_SHIFT, process.env.START_SHIFT, process.env.BOT_TEXT);
-    console.log('EVENT', body.event, );
-    const event: Event = new Event(body.event);
-    console.log('EVENT', event);
     return BotHelper.isChallenge(body)
       ? this.sendResponse({ challenge: body.challenge })
-      : await this.processMessage(event);
+      : await this.processMessage(body);
   }
 
-  public async processMessage(event: Event): Promise<unknown> {
+  public async processMessage(body: IBody): Promise<unknown> {
+    const event: Event = new Event(body.event);
+    console.log('EVENT', event);
     // check if it is out of office time
     if (BotHelper.isOutOfOffice(event.eventTs, OutOfOfficeBot.botData)) {
       // Do nothing is message comes from a bot
