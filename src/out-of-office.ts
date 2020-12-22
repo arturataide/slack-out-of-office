@@ -33,6 +33,7 @@ export class OutOfOfficeBot {
   }
 
   public async pleaseWork(body: IBody): Promise<unknown> {
+    console.log('ENV_VARS', process.env.START_SHIFT, process.env.START_SHIFT, process.env.BOT_TEXT);
     const event: Event = new Event(body.event);
     return BotHelper.isChallenge(body)
       ? this.sendResponse({ challenge: body.challenge })
