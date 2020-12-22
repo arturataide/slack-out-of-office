@@ -9,6 +9,7 @@ import { set } from 'date-fns';
 // main function handler
 export async function handler(apiEvent: APIGatewayEvent): Promise<unknown> {
   const body: IBody = JSON.parse(apiEvent.body);
+  console.log('BOT', body);
   const outOfOfficeBot: OutOfOfficeBot = new OutOfOfficeBot();
   return outOfOfficeBot.pleaseWork(body);
 }
@@ -35,6 +36,7 @@ export class OutOfOfficeBot {
   public async pleaseWork(body: IBody): Promise<unknown> {
     console.log('ENV_VARS', process.env.START_SHIFT, process.env.START_SHIFT, process.env.BOT_TEXT);
     const event: Event = new Event(body.event);
+    console.log('EVENT', event);
     return BotHelper.isChallenge(body)
       ? this.sendResponse({ challenge: body.challenge })
       : await this.processMessage(event);
