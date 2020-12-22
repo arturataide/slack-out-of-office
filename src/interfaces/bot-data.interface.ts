@@ -1,5 +1,5 @@
 export interface IBotData {
-  startWorkingShift: Date;
-  endWorkingShift: Date;
-  phrase: string;
+  startWorkShift: Date;
+  endWorkShift: Date;
+  text: string;
 }

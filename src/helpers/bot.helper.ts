@@ -1,7 +1,7 @@
 import { Event } from '../entities/event.entity';
 import { IBody } from '../interfaces/body.interface';
 import { IBotData } from '../interfaces/bot-data.interface';
-import { isWeekend, isWithinInterval, set } from 'date-fns';
+import { isWeekend, isWithinInterval } from 'date-fns';
 
 export class BotHelper {
   static isChallenge(body: IBody): boolean {
@@ -12,25 +12,14 @@ export class BotHelper {
     return !!event.botId && !!event.botProfile;
   }
 
-  static isOutOfOffice(messageDateTime: Date): boolean {
+  static isOutOfOffice(eventTs: string, botData: IBotData): boolean {
+    const messageDateTime = new Date(parseInt(eventTs) * 1000);
     console.log('RECEIVED AT: ', messageDateTime);
-    console.log('TEST: ', new Date());
-    console.log('START AT: ', BotHelper.getBotData().startWorkingShift);
-    console.log('END AT: ', BotHelper.getBotData().endWorkingShift);
     return (
       isWithinInterval(messageDateTime, {
-        start: BotHelper.getBotData().startWorkingShift,
-        end: BotHelper.getBotData().endWorkingShift,
+        start: botData.startWorkShift,
+        end: botData.endWorkShift,
       }) || isWeekend(messageDateTime)
     );
-  }
-
-  // TODO
-  static getBotData(): IBotData {
-    return {
-      startWorkingShift: set(new Date(), { hours: 7, minutes: 30 }),
-      endWorkingShift: set(new Date(), { hours: 17, minutes: 30 }),
-      phrase: 'Hey',
-    };
   }
 }
