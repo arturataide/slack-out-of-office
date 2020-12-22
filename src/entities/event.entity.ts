@@ -1,22 +1,21 @@
-import { BotProfile } from './bot-profile.entity';
+import { IBotProfile } from '../interfaces/bot-profile.interface';
 
 export class Event {
-  botId: string;
-  type: string;
+  // nothing more needed for now
+  botId?: string;
   text: string;
-  user: string;
   ts: string;
-  team: string;
-  botProfile?: BotProfile;
+  botProfile?: IBotProfile;
   channel: string;
   eventTs: string;
   channelType: string;
 
-  constructor(obj: Partial<Event>) {
+  constructor(obj: unknown) {
     Object.assign(this, {
-      ...obj,
-      botId: obj['bot_id'],
-      botProfile: obj['bot_profile'],
+      botId: !!obj['bot_id'] ? obj['bot_id'] : null,
+      text: obj['text'],
+      ts: obj['ts'],
+      botProfile: !!obj['bot_profile'] ? obj['bot_profile'] : null,
       eventTs: obj['event_ts'],
       channelType: obj['channel_type'],
     });

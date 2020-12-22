@@ -5,19 +5,32 @@ import { MessageHelper } from './helpers/message.helper';
 import { IBody } from './interfaces/body.interface';
 import { IBotData } from './interfaces/bot-data.interface';
 import { set } from 'date-fns';
+import { IResponse } from './interfaces/response.interface';
 
-// main function handler
-export async function handler(apiEvent: APIGatewayEvent): Promise<unknown> {
+/**
+ * @description Netlify function handler. This method is accessed when thr function is triggered.
+ * @param apiEvent
+ */
+export async function handler(apiEvent: APIGatewayEvent): Promise<IResponse> {
   const body: IBody = JSON.parse(apiEvent.body);
   const outOfOfficeBot: OutOfOfficeBot = new OutOfOfficeBot();
   return outOfOfficeBot.pleaseWork(body);
 }
 
 export class OutOfOfficeBot {
+  /**
+   * @private
+   * @description Get the bot token from environmental variables
+   * @returns string containing the bot token
+   */
   private static get token(): string {
     return process.env.TOKEN;
   }
 
+  /**
+   * @description Get the signing secret from environmental variables
+   * @returns string containing the signing secret
+   */
   private static get signingSecret(): string {
     return process.env.SIGNING_SECRET;
   }
@@ -32,16 +45,14 @@ export class OutOfOfficeBot {
     };
   }
 
-  public async pleaseWork(body: IBody): Promise<unknown> {
-    console.log('ENV_VARS', process.env.START_SHIFT, process.env.START_SHIFT, process.env.BOT_TEXT);
+  public async pleaseWork(body: IBody): Promise<IResponse> {
     return BotHelper.isChallenge(body)
       ? this.sendResponse({ challenge: body.challenge })
       : await this.processMessage(body);
   }
 
-  public async processMessage(body: IBody): Promise<unknown> {
+  private async processMessage(body: IBody): Promise<IResponse> {
     const event: Event = new Event(body.event);
-    console.log('EVENT', event);
     // check if it is out of office time
     if (BotHelper.isOutOfOffice(event.eventTs, OutOfOfficeBot.botData)) {
       // Do nothing is message comes from a bot
@@ -50,7 +61,6 @@ export class OutOfOfficeBot {
           message: 'Message sent from a bot. No action performed',
         });
       }
-      console.log('SENDING MESSAGE');
       await MessageHelper.publishMessage(
         OutOfOfficeBot.token,
         OutOfOfficeBot.signingSecret,
@@ -65,7 +75,7 @@ export class OutOfOfficeBot {
     });
   }
 
-  public sendResponse(body: unknown): unknown {
+  private sendResponse(body: { message?: string; challenge?: string }): IResponse {
     return {
       headers: {
         'Content-Type': 'application/json',
