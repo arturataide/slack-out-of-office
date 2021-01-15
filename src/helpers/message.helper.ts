@@ -21,7 +21,7 @@ export class MessageHelper {
       const result = await app.client.chat.postMessage({
         token,
         channel,
-        text: 'test',
+        text,
         icon_emoji: ':clock1:',
         thread_ts: threadTs,
       });

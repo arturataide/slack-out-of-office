@@ -14,6 +14,7 @@ export class Event {
     Object.assign(this, {
       botId: !!obj['bot_id'] ? obj['bot_id'] : null,
       text: obj['text'],
+      channel: obj['channel'],
       ts: obj['ts'],
       botProfile: !!obj['bot_profile'] ? obj['bot_profile'] : null,
       eventTs: obj['event_ts'],

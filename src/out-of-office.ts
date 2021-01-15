@@ -35,6 +35,14 @@ export class OutOfOfficeBot {
     return process.env.SIGNING_SECRET;
   }
 
+  /**
+   * @description Get the bot_text from environmental variables
+   * @returns string containing the bot text
+   */
+  private static get botText(): string {
+    return process.env.BOT_TEXT;
+  }
+
   private static get botData(): IBotData {
     const startWorkingHours: Array<number> = process.env.START_SHIFT.split(':').map((value: string) => parseInt(value));
     const endWorkingHours: Array<number> = process.env.END_SHIFT.split(':').map((value: string) => parseInt(value));
@@ -47,7 +55,7 @@ export class OutOfOfficeBot {
 
   public async pleaseWork(body: IBody): Promise<IResponse> {
     return BotHelper.isChallenge(body)
-      ? this.sendResponse({ challenge: body.challenge })
+      ? OutOfOfficeBot.sendResponse({ challenge: body.challenge })
       : await this.processMessage(body);
   }
 
@@ -57,7 +65,7 @@ export class OutOfOfficeBot {
     if (BotHelper.isOutOfOffice(event.eventTs, OutOfOfficeBot.botData)) {
       // Do nothing is message comes from a bot
       if (BotHelper.isBot(event)) {
-        return this.sendResponse({
+        return OutOfOfficeBot.sendResponse({
           message: 'Message sent from a bot. No action performed',
         });
       }
@@ -66,17 +74,17 @@ export class OutOfOfficeBot {
         OutOfOfficeBot.token,
         OutOfOfficeBot.signingSecret,
         event.channel,
-        'We are out of the office currently. We will reply as soon as possible.',
+        OutOfOfficeBot.botText,
         event.eventTs,
       );
-      return this.sendResponse({ message: 'Out Of Office Message Send' });
+      return OutOfOfficeBot.sendResponse({ message: 'Out Of Office Message Send' });
     }
-    return this.sendResponse({
+    return OutOfOfficeBot.sendResponse({
       message: 'We are in working hours. No action performed',
     });
   }
 
-  private sendResponse(body: { message?: string; challenge?: string }): IResponse {
+  private static sendResponse(body: { message?: string; challenge?: string }): IResponse {
     return {
       headers: {
         'Content-Type': 'application/json',
