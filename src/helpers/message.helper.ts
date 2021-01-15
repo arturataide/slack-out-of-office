@@ -16,11 +16,12 @@ export class MessageHelper {
       logLevel: LogLevel.DEBUG,
     });
     console.log('PublishMessage', channel, text);
+    console.log('PublishMessage', token, channel);
     try {
       const result = await app.client.chat.postMessage({
         token,
         channel,
-        text,
+        text: 'test',
         icon_emoji: ':clock1:',
         thread_ts: threadTs,
       });

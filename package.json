@@ -10,7 +10,12 @@
     "test": "jest",
     "test:coverage": "jest --coverage"
   },
-  "keywords": ["slack", "bot", "out-of-office", "automated messaging"],
+  "keywords": [
+    "slack",
+    "bot",
+    "out-of-office",
+    "automated messaging"
+  ],
   "author": {
     "name": "Artur Ataide",
     "url": "https://arturataide.io"
