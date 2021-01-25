@@ -59,6 +59,11 @@ export class OutOfOfficeBot {
       : await this.processMessage(body);
   }
 
+  /**
+   * TODO: Method to big. proper split this
+   * @param body
+   * @private
+   */
   private async processMessage(body: IBody): Promise<IResponse> {
     const event: Event = new Event(body.event);
     // check if it is out of office time
@@ -69,15 +74,19 @@ export class OutOfOfficeBot {
           message: 'Message sent from a bot. No action performed',
         });
       }
-      console.log('MESSAGE RECEIVED: ', event.eventTs, ' => ', event.text);
-      await MessageHelper.publishMessage(
-        OutOfOfficeBot.token,
-        OutOfOfficeBot.signingSecret,
-        event.channel,
-        OutOfOfficeBot.botText,
-        event.eventTs,
-      );
-      return OutOfOfficeBot.sendResponse({ message: 'Out Of Office Message Send' });
+      console.log('MESSAGE RECEIVED: ', event);
+      // This prevents to re-send a message in case of edit
+      if (!!event.text) {
+        await MessageHelper.publishMessage(
+          OutOfOfficeBot.token,
+          OutOfOfficeBot.signingSecret,
+          event.channel,
+          OutOfOfficeBot.botText,
+          event.eventTs,
+        );
+        return OutOfOfficeBot.sendResponse({ message: 'Out Of Office Message Send' });
+      }
+      return OutOfOfficeBot.sendResponse({ message: 'Message not sent. It was an edit' });
     }
     return OutOfOfficeBot.sendResponse({
       message: 'We are in working hours. No action performed',

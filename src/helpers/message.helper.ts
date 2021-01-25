@@ -12,8 +12,7 @@ export class MessageHelper {
     const app = new App({
       token,
       signingSecret,
-      // LogLevel can be imported and used to make debugging simpler
-      logLevel: LogLevel.DEBUG,
+      logLevel: LogLevel.INFO,
     });
     console.log('SENDING MESSAGE!');
     try {
