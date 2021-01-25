@@ -69,7 +69,7 @@ export class OutOfOfficeBot {
           message: 'Message sent from a bot. No action performed',
         });
       }
-      console.log('TRYING to send a message', event);
+      console.log('MESSAGE RECEIVED: ', event.eventTs, ' => ', event.text);
       await MessageHelper.publishMessage(
         OutOfOfficeBot.token,
         OutOfOfficeBot.signingSecret,

@@ -15,19 +15,18 @@ export class MessageHelper {
       // LogLevel can be imported and used to make debugging simpler
       logLevel: LogLevel.DEBUG,
     });
-    console.log('PublishMessage', channel, text);
-    console.log('PublishMessage', token, channel);
+    console.log('SENDING MESSAGE!');
     try {
-      const result = await app.client.chat.postMessage({
+      await app.client.chat.postMessage({
         token,
         channel,
         text,
         icon_emoji: ':clock1:',
         thread_ts: threadTs,
       });
-      console.log(result);
+      console.log('MESSAGE SENT!');
     } catch (error) {
-      console.error(error);
+      console.error('MESSAGE ERROR', error);
     }
   }
 }
